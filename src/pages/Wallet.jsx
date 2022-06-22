@@ -10,8 +10,8 @@ class Wallet extends React.Component {
     const { dispatch } = this.props;
     const response = await getAllCurrencies();
     const currencies = Object.keys(response);
-    console.log(currencies);
-    dispatch(fetchCurrenciesThunk(currencies));
+    const semUSD = currencies.filter((item) => item !== 'USDT');
+    dispatch(fetchCurrenciesThunk(semUSD));
   }
 
   render() {
