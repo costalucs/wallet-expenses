@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { emailInput } from '../actions';
 
 class Login extends React.Component {
@@ -10,26 +9,30 @@ class Login extends React.Component {
     password: '',
   }
 
-  verifyBtn() {
+  verifyBtn= () => {
     const min = 6;
     const { password } = this.state;
     return password.length >= min;
   }
 
   // referencia: https://www.horadecodar.com.br/2020/09/13/como-validar-email-com-javascript/
-  validateEmail() {
+  validateEmail= () => {
     const { email } = this.state;
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   }
 
-  activateButton() {
-    return (this.verifyBtn() && this.validateEmail());
+  activateButton = () => (this.verifyBtn() && this.validateEmail())
+
+  toWallet = () => {
+    const { saveEmail, history } = this.props;
+    const { email } = this.state;
+    saveEmail(email);
+    history.push('/carteira');
   }
 
   render() {
     const { email, password } = this.state;
-    const { saveEmail } = this.props;
     return (
       <form>
         <input
@@ -44,16 +47,13 @@ class Login extends React.Component {
           value={ password }
           onChange={ (e) => this.setState({ password: e.target.value }) }
         />
-        <Link to="/carteira">
-          <button
-            type="button"
-            disabled={ !this.activateButton() }
-            onClick={ () => saveEmail(email) }
-          >
-            Entrar
-
-          </button>
-        </Link>
+        <button
+          type="button"
+          disabled={ !this.activateButton() }
+          onClick={ this.toWallet }
+        >
+          Entrar
+        </button>
       </form>
     );
   }
@@ -61,8 +61,6 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   saveEmail: (payload) => dispatch(emailInput(payload)) });
-// const { history } = this.props;
-// history.push('/carteira');
 
 Login.propTypes = {
   saveEmail: PropTypes.func,

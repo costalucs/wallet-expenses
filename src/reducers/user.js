@@ -4,16 +4,14 @@ import { EMAIL_INPUT } from '../actions';
 const INITIAL_STATE = {
   email: '',
 };
-const user = (state = INITIAL_STATE, action) => {
+function user(state = INITIAL_STATE, action) {
   switch (action.type) {
   case EMAIL_INPUT:
-    return {
-      ...state,
-      email: action.payload,
+    return { email: action.payload,
     };
   default:
     return state;
   }
-};
+}
 
 export default user;
