@@ -1,14 +1,31 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { addExpense } from '../actions';
 
 class ExpensesForm extends Component {
   state ={
+    id: 1,
     value: '',
     description: '',
     currency: 'USD',
     method: 'Dinheiro',
     tag: 'Alimentação',
+  }
+
+  aletatoryID = () => Math.floor(Date.now() * Math.random())
+
+  handleChange = ({ target: { id, value } }) => {
+    this.setState({ [id]: value });
+  }
+
+  handleClick = async () => {
+    const { addExpenses } = this.props;
+    const fetchAPI = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const currencies = await fetchAPI.json();
+    const newid = this.aletatoryID();
+    addExpenses({ ...this.state, currencies });
+    this.setState((prev) => ({ id: prev.id + newid }));
   }
 
   render() {
@@ -22,21 +39,23 @@ class ExpensesForm extends Component {
           data-testid="value-input"
           type="number"
           value={ value }
-          onChange={ (e) => this.setState({ value: e.target.value }) }
+          id="value"
+          onChange={ this.handleChange }
         />
         <input
           data-testid="description-input"
           type="text"
           value={ description }
-          onChange={ (e) => this.setState({ description: e.target.value }) }
+          id="description"
+          onChange={ this.handleChange }
         />
-        <label htmlFor="moedas">
+        <label htmlFor="currency">
           Moeda
           <select
-            name="moedas"
-            id="moedas"
+            name="currency"
+            id="currency"
             value={ currency }
-            onChange={ (e) => this.setState({ currency: e.target.value }) }
+            onChange={ this.handleChange }
           >
             {currencies.map((item, key) => (
               <option key={ key } value={ item }>{item}</option>)) }
@@ -48,8 +67,8 @@ class ExpensesForm extends Component {
             data-testid="method-input"
             name="metodo"
             value={ method }
-            onChange={ (e) => this.setState({ method: e.target.value }) }
-            id=""
+            id="method"
+            onChange={ this.handleChange }
           >
             {metodos.map((item, key) => (
               <option key={ key } value={ item }>{item}</option>)) }
@@ -61,13 +80,14 @@ class ExpensesForm extends Component {
             data-testid="tag-input"
             name="despesas"
             value={ tag }
-            onChange={ (e) => this.setState({ tag: e.target.value }) }
+            id="tag"
+            onChange={ this.handleChange }
           >
             {despesas.map((item, key) => (
               <option key={ key } value={ item }>{item}</option>)) }
           </select>
         </label>
-        <button type="button">Adicionar despesa</button>
+        <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
       </form>
     );
   }
@@ -76,7 +96,10 @@ const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  addExpenses: (payload) => dispatch(addExpense(payload)),
+});
 ExpensesForm.propTypes = {
   currencies: PropTypes.array,
 }.isRequired;
-export default connect(mapStateToProps)(ExpensesForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);
