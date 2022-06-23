@@ -29,7 +29,11 @@ Wallet.propTypes = {
   allCurrencies: PropTypes.func,
 }.isRequired;
 
+const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   allCurrencies: () => dispatch(fetchCurrenciesThunk()),
 });
-export default connect(null, mapDispatchToProps)(Wallet);
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
