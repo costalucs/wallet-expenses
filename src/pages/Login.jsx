@@ -9,14 +9,14 @@ class Login extends React.Component {
     password: '',
   }
 
-  verifyBtn= () => {
+  verifyBtn = () => {
     const min = 6;
     const { password } = this.state;
     return password.length >= min;
   }
 
   // referencia: https://www.horadecodar.com.br/2020/09/13/como-validar-email-com-javascript/
-  validateEmail= () => {
+  validateEmail = () => {
     const { email } = this.state;
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
