@@ -1,23 +1,31 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { updateExpenses } from '../actions';
 import parseValue from '../services/parseValue';
 
 class ExpenseTable extends Component {
+  deleteExpense = (expenseId) => {
+    const { expenses, updateExpense } = this.props;
+    const expensesUpdated = expenses.filter((expense) => expense.id !== expenseId);
+    return updateExpense(expensesUpdated);
+  }
+
   render() {
     const { expenses } = this.props;
-    console.log(expenses);
     return (
-      <div>
-        <th>Descrição</th>
-        <th>Tag</th>
-        <th>Método de pagamento</th>
-        <th>Valor</th>
-        <th>Moeda</th>
-        <th>Câmbio utilizado</th>
-        <th>Valor convertido</th>
-        <th>Moeda de conversão</th>
-        <th>Editar/Excluir</th>
+      <table>
+        <thead>
+          <th>Descrição</th>
+          <th>Tag</th>
+          <th>Método de pagamento</th>
+          <th>Valor</th>
+          <th>Moeda</th>
+          <th>Câmbio utilizado</th>
+          <th>Valor convertido</th>
+          <th>Moeda de conversão</th>
+          <th>Editar/Excluir</th>
+        </thead>
         {expenses.map((item, index) => (
           <tr key={ index }>
             <td>{item.description}</td>
@@ -32,9 +40,19 @@ class ExpenseTable extends Component {
 
             </td>
             <td>Real</td>
+            <td>
+              <button
+                data-testid="delete-btn"
+                type="button"
+                onClick={ () => this.deleteExpense(item.id) }
+              >
+                Apagar
+
+              </button>
+            </td>
           </tr>
         ))}
-      </div>
+      </table>
     );
   }
 }
@@ -43,8 +61,12 @@ ExpenseTable.propTypes = {
   expenses: PropTypes.array,
 }.isRequired;
 
+const mapDispatchToProps = (dispatch) => ({
+  updateExpense: (payload) => dispatch(updateExpenses(payload)),
+});
+
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(ExpenseTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTable);
