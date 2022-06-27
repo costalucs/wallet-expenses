@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateExpenses } from '../actions';
+import { editingExpense, updateExpenses } from '../actions';
 import parseValue from '../services/parseValue';
 
 class ExpenseTable extends Component {
@@ -9,6 +9,14 @@ class ExpenseTable extends Component {
     const { expenses, updateExpense } = this.props;
     const expensesUpdated = expenses.filter((expense) => expense.id !== expenseId);
     return updateExpense(expensesUpdated);
+  }
+
+  handleEdit =(id) => {
+    const { expenses, editExpense } = this.props;
+    const expenseSearch = expenses.filter((item) => id === item.id);
+    console.log(expenseSearch);
+    editExpense(expenseSearch);
+    // editExpense(id);
   }
 
   render() {
@@ -41,6 +49,14 @@ class ExpenseTable extends Component {
             </td>
             <td>Real</td>
             <td>
+
+              <button
+                data-testid="edit-btn"
+                type="button"
+                onClick={ () => this.handleEdit(item.id) }
+              >
+                Editar
+              </button>
               <button
                 data-testid="delete-btn"
                 type="button"
@@ -49,6 +65,7 @@ class ExpenseTable extends Component {
                 Apagar
 
               </button>
+
             </td>
           </tr>
         ))}
@@ -63,6 +80,7 @@ ExpenseTable.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   updateExpense: (payload) => dispatch(updateExpenses(payload)),
+  editExpense: (payload) => dispatch(editingExpense(payload)),
 });
 
 const mapStateToProps = (state) => ({

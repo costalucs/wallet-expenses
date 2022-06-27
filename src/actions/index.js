@@ -6,6 +6,7 @@ export const FETCH_CURRENCIES_SUCCESS = 'FETCH_CURRENCIES_SUCCESS';
 export const REQUEST = 'REQUEST';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const UPDATE_EXPENSES = 'UPDATE_EXPENSES';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
 export const emailInput = (payload) => ({
   type: EMAIL_INPUT,
@@ -20,6 +21,11 @@ export const addExpense = (expense) => ({
 export const updateExpenses = (expenses) => ({
   type: UPDATE_EXPENSES,
   expenses,
+});
+
+export const editingExpense = (expense) => ({
+  type: EDIT_EXPENSE,
+  expense,
 });
 
 export function fetchCurrencies(currencies) {

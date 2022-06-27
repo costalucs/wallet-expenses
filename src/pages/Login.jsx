@@ -34,22 +34,64 @@ class Login extends React.Component {
   render() {
     const { email, password } = this.state;
     return (
+      // <form>
+      //   <input
+      //     data-testid="email-input"
+      //     type="email"
+      //     value={ email }
+      //     onChange={ (e) => this.setState({ email: e.target.value }) }
+      //   />
+      //   <input
+      //     data-testid="password-input"
+      //     type="password"
+      //     value={ password }
+      //     onChange={ (e) => this.setState({ password: e.target.value }) }
+      //   />
+      //   <button
+      //     type="button"
+      //     disabled={ !this.activateButton() }
+      //     onClick={ this.toWallet }
+      //   >
+      //     Entrar
+      //   </button>
+      // </form>
       <form>
-        <input
-          data-testid="email-input"
-          type="email"
-          value={ email }
-          onChange={ (e) => this.setState({ email: e.target.value }) }
-        />
-        <input
-          data-testid="password-input"
-          type="password"
-          value={ password }
-          onChange={ (e) => this.setState({ password: e.target.value }) }
-        />
+        <div className="form-floating">
+          <label
+            htmlFor="exampleInputEmail1"
+            className="form-label"
+          >
+            Email address
+
+            <input
+              type="email"
+              data-testid="email-input"
+              className="form-control"
+              id="exampleInputEmail1"
+              name="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              value={ email }
+              onChange={ (e) => this.setState({ email: e.target.value }) }
+            />
+          </label>
+        </div>
+        <div className="form-floating">
+          <label htmlFor="exampleInputPassword1" className="form-label">
+            Password
+            <input
+              type="password"
+              data-testid="password-input"
+              className="form-control"
+              value={ password }
+              id="exampleInputPassword1"
+              onChange={ (e) => this.setState({ password: e.target.value }) }
+            />
+          </label>
+        </div>
         <button
-          type="button"
           disabled={ !this.activateButton() }
+          type="submit"
+          className="w-100 btn btn-lg btn-primary"
           onClick={ this.toWallet }
         >
           Entrar

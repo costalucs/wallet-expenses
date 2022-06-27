@@ -8,24 +8,18 @@ class ExpensesForm extends Component {
     id: 0,
     value: '',
     currency: 'USD',
-    method: 'Cartão de crédito',
+    method: 'Cartão de débito',
     tag: '',
     description: '',
+  }
+
+  componentDidUpdate() {
+    this.verifyEditor();
   }
 
   handleChange = ({ target: { id, value } }) => {
     this.setState({ [id]: value });
   }
-
-  // calcExpenses = () => {
-  //   const { expenses } = this.props;
-  //   const total = expenses.reduce((sum, item) => {
-  //     const { value } = item;
-  //     // console.log(item.currencies[item.currency]);
-  //     return sum + this.parseValue(value, item.exchangeRates[item.currency].ask);
-  //   }, 0);
-  //   return total;
-  // }
 
   parseValue = (value, cambioRate) => parseFloat(value) * parseFloat(cambioRate)
 
@@ -41,12 +35,13 @@ class ExpensesForm extends Component {
     // this.calcExpenses();
   }
 
+  verifyEditor = () => {
+    const { editor } = this.props;
+    return editor;
+  }
+
   render() {
-    // const metodos = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
-    // const despesas = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     const { currencies } = this.props;
-    // const total = expenses
-    //   .forEach((item) => console.log(item.expenses[/item.currency/i]));
     const { value, description, currency, method, tag } = this.state;
     return (
       <form>
@@ -111,7 +106,15 @@ class ExpensesForm extends Component {
             <option value="Saúde">Saúde</option>
           </select>
         </label>
-        <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
+        {this.verifyEditor() ? (
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Adicionar despesa
+
+          </button>)
+          : <button type="button" onClick={ this.handleClick }>Editar despesa</button>}
       </form>
     );
   }
@@ -119,6 +122,7 @@ class ExpensesForm extends Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  editor: state.wallet.editor,
 });
 
 const mapDispatchToProps = (dispatch) => ({

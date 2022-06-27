@@ -30,8 +30,13 @@ class Header extends Component {
      return (
        <header>
          <p data-testid="email-field">{email}</p>
-         <p data-testid="total-field">{soma}</p>
-         <p data-testid="header-currency-field">BRL</p>
+         <p data-testid="header-currency-field">
+           BRL
+           {' '}
+           <span data-testid="total-field">
+             {soma}
+           </span>
+         </p>
        </header>
      );
    }
