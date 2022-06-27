@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editingExpense, updateExpenses } from '../actions';
+import { editingExpense, objExpense, updateExpenses } from '../actions';
 import parseValue from '../services/parseValue';
 
 class ExpenseTable extends Component {
@@ -12,11 +12,8 @@ class ExpenseTable extends Component {
   }
 
   handleEdit =(id) => {
-    const { expenses, editExpense } = this.props;
-    const expenseSearch = expenses.filter((item) => id === item.id);
-    console.log(expenseSearch);
-    editExpense(expenseSearch);
-    // editExpense(id);
+    const { currExpense } = this.props;
+    currExpense(id);
   }
 
   render() {
@@ -81,6 +78,7 @@ ExpenseTable.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   updateExpense: (payload) => dispatch(updateExpenses(payload)),
   editExpense: (payload) => dispatch(editingExpense(payload)),
+  currExpense: (payload) => dispatch(objExpense(payload)),
 });
 
 const mapStateToProps = (state) => ({

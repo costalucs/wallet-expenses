@@ -7,6 +7,7 @@ export const REQUEST = 'REQUEST';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const UPDATE_EXPENSES = 'UPDATE_EXPENSES';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const CURR_EXPENSE = 'CURR_EXPENSE';
 
 export const emailInput = (payload) => ({
   type: EMAIL_INPUT,
@@ -26,6 +27,11 @@ export const updateExpenses = (expenses) => ({
 export const editingExpense = (expense) => ({
   type: EDIT_EXPENSE,
   expense,
+});
+
+export const objExpense = (id) => ({
+  type: CURR_EXPENSE,
+  id,
 });
 
 export function fetchCurrencies(currencies) {

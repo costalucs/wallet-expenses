@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addExpense } from '../actions';
+import { addExpense, editingExpense } from '../actions';
 
 class ExpensesForm extends Component {
   state ={
@@ -27,12 +27,15 @@ class ExpensesForm extends Component {
     const { addExpenses } = this.props;
     const fetchAPI = await fetch('https://economia.awesomeapi.com.br/json/all');
     const currencies = await fetchAPI.json();
-    delete currencies.DOGE;
     addExpenses({ ...this.state, exchangeRates: { ...currencies } });
     this.setState((prev) => ({
       id: prev.id + 1,
       value: '' }));
-    // this.calcExpenses();
+  }
+
+  handleEdit = (state) => {
+    const { editExpense } = this.props;
+    editExpense(state);
   }
 
   verifyEditor = () => {
@@ -43,6 +46,14 @@ class ExpensesForm extends Component {
   render() {
     const { currencies } = this.props;
     const { value, description, currency, method, tag } = this.state;
+    const expense = {
+      id: 0,
+      value,
+      currency,
+      method,
+      tag,
+      description,
+    };
     return (
       <form>
         <input
@@ -81,8 +92,6 @@ class ExpensesForm extends Component {
             required
             onChange={ this.handleChange }
           >
-            {/* {metodos.map((item, index) => (
-              <option key={ index } value={ item }>{item}</option>)) } */}
             <option value="Dinheiro">Dinheiro</option>
             <option value="Cartão de crédito">Cartão de crédito</option>
             <option value="Cartão de débito">Cartão de débito</option>
@@ -97,8 +106,6 @@ class ExpensesForm extends Component {
             id="tag"
             onChange={ this.handleChange }
           >
-            {/* {despesas.map((item, key) => (
-              <option key={ key } value={ item }>{item}</option>)) } */}
             <option value="Alimentação">Alimentação</option>
             <option value="Lazer">Lazer</option>
             <option value="Trabalho">Trabalho</option>
@@ -114,7 +121,13 @@ class ExpensesForm extends Component {
             Adicionar despesa
 
           </button>)
-          : <button type="button" onClick={ this.handleClick }>Editar despesa</button>}
+          : (
+            <button
+              type="button"
+              onClick={ () => this.handleEdit(expense) }
+            >
+              Editar despesa
+            </button>)}
       </form>
     );
   }
@@ -123,10 +136,12 @@ const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
   editor: state.wallet.editor,
+  idEditr: state.wallet.idEditor,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addExpenses: (payload) => dispatch(addExpense(payload)),
+  editExpense: (payload) => dispatch(editingExpense(payload)),
 });
 ExpensesForm.propTypes = {
   currencies: PropTypes.array,

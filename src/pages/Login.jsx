@@ -34,27 +34,6 @@ class Login extends React.Component {
   render() {
     const { email, password } = this.state;
     return (
-      // <form>
-      //   <input
-      //     data-testid="email-input"
-      //     type="email"
-      //     value={ email }
-      //     onChange={ (e) => this.setState({ email: e.target.value }) }
-      //   />
-      //   <input
-      //     data-testid="password-input"
-      //     type="password"
-      //     value={ password }
-      //     onChange={ (e) => this.setState({ password: e.target.value }) }
-      //   />
-      //   <button
-      //     type="button"
-      //     disabled={ !this.activateButton() }
-      //     onClick={ this.toWallet }
-      //   >
-      //     Entrar
-      //   </button>
-      // </form>
       <form>
         <div className="form-floating">
           <label
@@ -62,7 +41,6 @@ class Login extends React.Component {
             className="form-label"
           >
             Email address
-
             <input
               type="email"
               data-testid="email-input"

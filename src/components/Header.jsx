@@ -2,30 +2,23 @@ import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import parseValue from '../services/parseValue';
 
 class Header extends Component {
   state = {
   }
 
-  setantoState =() => {
-    const total = this.calcExpenses();
-    console.log(total);
-  }
-
-  calcExpenses = () => {
-    const { expenses } = this.props;
-    const total = expenses.reduce((sum, item) => {
-      const { value } = item;
-      return sum + this.parseValue(value, item.exchangeRates[item.currency].ask);
-    }, 0);
-    return total;
-  }
-
-   parseValue = (value, cambioRate) => parseFloat(value) * parseFloat(cambioRate)
+   calcExpenses = () => {
+     const { expenses } = this.props;
+     const total = expenses.reduce((sum, item) => {
+       const { value } = item;
+       return sum + parseValue(value, item.exchangeRates[item.currency].ask);
+     }, 0);
+     return parseFloat(total).toFixed(2);
+   }
 
    render() {
      const { email } = this.props;
-     const soma = parseFloat(this.calcExpenses()).toFixed(2);
 
      return (
        <header>
@@ -34,7 +27,7 @@ class Header extends Component {
            BRL
            {' '}
            <span data-testid="total-field">
-             {soma}
+             {this.calcExpenses()}
            </span>
          </p>
        </header>
