@@ -25,6 +25,7 @@ const wallet = (state = INITIAL_STATE, action) => {
       editor: false,
       idEditor: action.id };
   case EDIT_EXPENSE:
+    console.log(action);
     return {
       ...state,
       editor: true,

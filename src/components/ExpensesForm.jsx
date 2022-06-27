@@ -36,6 +36,7 @@ class ExpensesForm extends Component {
   handleEdit = (state) => {
     const { editExpense } = this.props;
     editExpense(state);
+    this.setState((prev) => ({ ...state, id: prev.id }));
   }
 
   verifyEditor = () => {
@@ -44,10 +45,10 @@ class ExpensesForm extends Component {
   }
 
   render() {
-    const { currencies } = this.props;
+    const { currencies, idEditr } = this.props;
     const { value, description, currency, method, tag } = this.state;
     const expense = {
-      id: 0,
+      id: idEditr,
       value,
       currency,
       method,
